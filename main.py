@@ -29,3 +29,9 @@ v_c = v_c_ms * 100 / 1000  # cm/ms | conduction velocity
 # membrane properties
 Rm = 3000 # ohm-cm^2 | membrane resistance (from Cable Eqn Params)
 Cm = 1    # uF/cm^2 | membrane capacitance (from Cable Eqn Params)
+
+# fiber geometry
+L = 100                      # cm   | fiber length
+dx = 100 * (2 * a)           # cm   | node spacing = 100 * axonal diameter (approx from class)
+xs = np.arange(0, L, dx)     # cm   | node positions along fiber
+N = len(xs)                  # number of nodes
