@@ -23,3 +23,7 @@ a_um = 300   # um   | axon radius (from lab handout)
 a = a_um * 1e-4  # cm   | axon radius 
 v_c_ms = 22.5  # m/s  | conduction velocity (from lab handout)
 v_c = v_c_ms * 100 / 1000  # cm/ms | conduction velocity
+
+# membrane properties
+Rm = 3000 # ohm-cm^2 | membrane resistance (from Cable Eqn Params)
+Cm = 1    # uF/cm^2 | membrane capacitance (from Cable Eqn Params)
