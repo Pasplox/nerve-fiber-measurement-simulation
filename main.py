@@ -15,6 +15,8 @@ Ro = 0.3  # cm | electrode y position (radial distance from fiber)
 
 # extracellular properties
 sigma_o = 5  # mS/cm | extracellular conductivity
+resistivity_i = 125 # ohm-cm | intracellular resistivity (from Cable Eqn Params)
+sigma_i = 1 / resistivity_i  # S/cm | intracellular conductivity
 
 # axonal properties
 a_um = 300   # um   | axon radius
