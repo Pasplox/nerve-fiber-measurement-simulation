@@ -72,3 +72,19 @@ B[diag_idx, diag_idx + 1] =  1 / (2 * dx) # superdiagonal
 phi_o = np.zeros(len(t)) # mV | extracellular potential at electrode over time
 
 ### ---------------------------
+
+### time loop
+for i, ti in enumerate(t):
+    # central position of the AP at current time ti
+    x_AP = v_c * ti
+    # gaussian AP model (Vm), calculated as a column vector with each entry corresponding to each node position xj
+    # recalculated at each time step (due to AP propagation)
+    Vm = V_rest + V_AP * np.exp(-((xj - x_AP)**2) / (2 * AP_sigma**2))
+    # calculate g, the spatial derivative of Vm using the central difference method (B matrix)
+    # @ = matrix multiplication operator
+    g = B @ Vm
+    # calculate phi_o at the current time step using the trapezoidal rule for numerical integration
+    # syntax is equivalent to manually calculating and summing the area of trapezoids between each pair of points in the array
+    phi_o[i] = coeff * np.trapz(d * g, dx=dx)
+
+### ---------------------------
