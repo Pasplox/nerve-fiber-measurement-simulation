@@ -35,3 +35,9 @@ L = 1000                      # cm   | fiber length
 dx = 100 * (2 * a)           # cm   | node spacing = 100 * axonal diameter (approx from class)
 xj = np.arange(0, L, dx)     # cm   | node positions along fiber
 N = len(xj)                  # number of nodes
+
+# time parameters
+dt = 0.01                    # ms   | time step
+T = 50                       # ms   | total simulation time
+t = np.arange(0, T, dt)     # ms   | time array
+
