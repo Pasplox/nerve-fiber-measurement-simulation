@@ -166,3 +166,6 @@ pp_amps = np.zeros(len(y_values))  # µV
 for i, Ro in enumerate(y_values):
     phi_o = simulate(50, Ro)
     pp_amps[i] = (np.max(phi_o) - np.min(phi_o)) * 1000  # µV | peak-to-peak amplitude
+
+np.savetxt('q3_pp_amp_vs_y.csv', np.column_stack([y_values, np.round(pp_amps, 4)]),
+           delimiter=',', header='y (cm),Peak-to-Peak (µV)', comments='', fmt='%.4f')
