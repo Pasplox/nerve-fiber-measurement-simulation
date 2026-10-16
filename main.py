@@ -56,3 +56,9 @@ coeff = -(a**2 * sigma_i) / (4 * sigma_o) # cm^2 | dipole coefficient (-a^2 * si
 # note: we only have to calculate these once since the electrode position is constant
 rj = np.sqrt((xj - xp)**2 + Ro**2)        # cm   | distance from each node to electrode
 d = (xp - xj) / rj**3                     # cm^-2 | geometric distance term (N x 1)
+# to calculate B matrix, format matrix to calculate central difference derivative of V_m
+# first and last rows remain zero (boundary condition)
+B = np.zeros((N, N))
+diag_idx = np.arange(1, N - 1)
+B[diag_idx, diag_idx - 1] = -1 / (2 * dx) # subdiagonal
+B[diag_idx, diag_idx + 1] =  1 / (2 * dx) # superdiagonal
