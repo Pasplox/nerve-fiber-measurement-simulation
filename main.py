@@ -180,3 +180,6 @@ def monopole(y, A):
 
 def dipole(y, B):
     return B / y**2
+
+popt_mono, pcov_mono = curve_fit(monopole, y_values, pp_amps)
+popt_dip, pcov_dip  = curve_fit(dipole, y_values, pp_amps)
