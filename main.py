@@ -18,7 +18,8 @@ sigma_o = 5 # mS/cm | extracellular conductivity (from lab handout)
 
 # intracellular properties
 resistivity_i = 125 # ohm-cm | intracellular resistivity (from Cable Eqn Params)
-sigma_i = 1 / resistivity_i # S/cm | intracellular conductivity
+sigma_i_Scm = 1 / resistivity_i # S/cm | intracellular conductivity
+sigma_i = sigma_i_Scm * 1000 # mS/cm | intracellular conductivity
 
 # axonal properties
 a_um = 300 # um   | axon radius (from lab handout)
@@ -50,3 +51,7 @@ AP_duration = 1 # ms   | approximate AP duration at a point
 AP_FWHM = AP_duration * v_c # cm   | spatial FWHM (duration × conduction velocity)
 AP_sigma = AP_FWHM / 2.36 # cm   | gaussian spatial sigma
 
+### calculated parameters
+coeff = -(a**2 * sigma_i) / (4 * sigma_o) # cm^2 | dipole coefficient (-a^2 * sigma_i / 4 * sigma_o)
+rj = np.sqrt((xj - xp)**2 + Ro**2)        # cm   | distance from each node to electrode
+d = (xp - xj) / rj**3                     # cm^-2 | geometric distance term (N x 1)
