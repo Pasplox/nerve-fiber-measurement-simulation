@@ -207,3 +207,11 @@ r2_mono = r2_score(pp_amps, monopole(y_values, *popt_mono))
 r2_dip  = r2_score(pp_amps, dipole(y_values,   *popt_dip))
 print(f'Monopole R²: {r2_mono:.4f}')
 print(f'Dipole   R²: {r2_dip:.4f}')
+
+# 95% confidence intervals for fit coefficients
+n = len(y_values)
+t_crit = t_dist.ppf(0.975, n - 1)  # n-1 dof for 1 parameter per model
+ci_mono = t_crit * np.sqrt(np.diag(pcov_mono))
+ci_dip  = t_crit * np.sqrt(np.diag(pcov_dip))
+print(f'Monopole: A = {popt_mono[0]:.4f} ± {ci_mono[0]:.4f} (95% CI: [{popt_mono[0]-ci_mono[0]:.4f}, {popt_mono[0]+ci_mono[0]:.4f}])')
+print(f'Dipole:   B = {popt_dip[0]:.4f} ± {ci_dip[0]:.4f} (95% CI: [{popt_dip[0]-ci_dip[0]:.4f}, {popt_dip[0]+ci_dip[0]:.4f}])')
