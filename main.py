@@ -130,3 +130,15 @@ ax.set_title(f'Spatial Derivative of $V_m$ vs Position at t={t_plot_g} ms')
 plt.tight_layout()
 plt.savefig('q1_g_vs_position_t10ms.png', dpi=300, bbox_inches='tight')
 plt.close()
+
+# Vm vs time at x=2cm
+x_obs = 2 # cm
+Vm_at_x = V_rest + V_AP * np.exp(-((x_obs - v_c * t)**2) / (2 * AP_sigma**2))
+fig, ax = plt.subplots()
+ax.plot(t, Vm_at_x)
+ax.set_xlabel('Time (ms)')
+ax.set_ylabel('$V_m$ (mV)')
+ax.set_title(f'Transmembrane Voltage vs Time at x={x_obs} cm')
+plt.tight_layout()
+plt.savefig('q1_Vm_vs_time_x2cm.png', dpi=300, bbox_inches='tight')
+plt.close()
