@@ -55,3 +55,4 @@ AP_sigma = AP_FWHM / 2.36 # cm   | gaussian spatial sigma
 coeff = -(a**2 * sigma_i) / (4 * sigma_o) # cm^2 | dipole coefficient (-a^2 * sigma_i / 4 * sigma_o)
 # note: we only have to calculate these once since the electrode position is constant
 rj = np.sqrt((xj - xp)**2 + Ro**2)        # cm   | distance from each node to electrode
+d = (xp - xj) / rj**3                     # cm^-2 | geometric distance term (N x 1)
