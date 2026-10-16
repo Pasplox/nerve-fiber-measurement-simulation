@@ -86,3 +86,5 @@ for i, ti in enumerate(t):
     # calculate phi_o at the current time step using the trapezoidal rule for numerical integration
     # syntax is equivalent to manually calculating and summing the area of trapezoids between each pair of points in the array
     phi_o[i] = coeff * np.trapz(d * g, dx=dx)
+
+### ---------------------------
