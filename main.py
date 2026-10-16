@@ -72,3 +72,7 @@ B[diag_idx, diag_idx + 1] =  1 / (2 * dx) # superdiagonal
 phi_o = np.zeros(len(t)) # mV | extracellular potential at electrode over time
 
 ### ---------------------------
+
+### time loop
+for i in range(len(t)):
+    pass
