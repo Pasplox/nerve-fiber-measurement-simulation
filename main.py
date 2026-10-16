@@ -143,3 +143,17 @@ ax.set_title(f'Transmembrane Voltage vs Time at x={x_obs} cm')
 plt.tight_layout()
 plt.savefig('q1_Vm_vs_time_x2cm.png', dpi=300, bbox_inches='tight')
 plt.close()
+
+### ---------------------------
+
+### q2 plots
+phi_o = simulate(60, Ro)
+# extracellular potential at electrode vs time
+fig, ax = plt.subplots()
+ax.plot(t, phi_o * 1000)
+ax.set_xlabel('Time (ms)')
+ax.set_ylabel('$\\phi_o$ (µV)')
+ax.set_title(f'Extracellular Potential at Electrode (x={xp} cm, y={Ro} cm) vs Time')
+plt.tight_layout()
+plt.savefig('q2_extracellular_potential_vs_time.png', dpi=300, bbox_inches='tight')
+plt.close()
