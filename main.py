@@ -9,6 +9,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 ### define parameters
+
+
+
 # electrode location
 xp = 50   # cm | electrode x position (from lab handout)
 Ro = 0.3  # cm | electrode y position / radial distance from fiber (from lab handout)
@@ -40,4 +43,10 @@ N = len(xj)                  # number of nodes
 dt = 0.01                    # ms   | time step
 T = 50                       # ms   | total simulation time
 t = np.arange(0, T, dt)     # ms   | time array
+
+# action potential parameters
+V_rest = -70                 # mV   | resting membrane potential
+V_AP = 100                   # mV   | AP amplitude above rest
+
+
 
