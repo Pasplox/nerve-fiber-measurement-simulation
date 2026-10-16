@@ -172,3 +172,11 @@ for i, Ro in enumerate(y_values):
 # save data to CSV
 np.savetxt('q3_pp_amp_vs_y.csv', np.column_stack([y_values, np.round(pp_amps, 4)]),
            delimiter=',', header='y (cm),Peak-to-Peak (µV)', comments='', fmt='%.4f')
+
+# curve fit models
+# using proportionality constants A and B for monopole and dipole models, respectively
+def monopole(y, A):
+    return A / y
+
+def dipole(y, B):
+    return B / y**2
