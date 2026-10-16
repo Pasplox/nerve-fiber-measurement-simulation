@@ -162,5 +162,7 @@ plt.close()
 
 ### q3 plots
 y_values = np.arange(0.1, 5.1, 0.5)
-for Ro in y_values:
-    pass
+pp_amps = np.zeros(len(y_values))  # µV
+for i, Ro in enumerate(y_values):
+    phi_o = simulate(50, Ro)
+    pp_amps[i] = (np.max(phi_o) - np.min(phi_o)) * 1000  # µV | peak-to-peak amplitude
