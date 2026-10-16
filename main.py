@@ -34,8 +34,8 @@ Rm = 3000 # ohm-cm^2 | membrane resistance (from Cable Eqn Params)
 Cm = 1 # uF/cm^2 | membrane capacitance (from Cable Eqn Params)
 
 # fiber geometry
-L = 1000 # cm   | fiber length
-dx = 100 * (2 * a) # cm   | node spacing = 100 * axonal diameter (approx from class)
+L = 400 # cm   | fiber length
+dx = 1 # cm   | integration node spacing
 xj = np.arange(0, L, dx) # cm   | node positions along fiber
 N = len(xj) # number of nodes
 
@@ -88,3 +88,57 @@ for i, ti in enumerate(t):
     phi_o[i] = coeff * np.trapz(d * g, dx=dx)
 
 ### ---------------------------
+
+### q1 plots
+# extracellular potential at electrode vs time
+fig, ax = plt.subplots()
+ax.plot(t, phi_o * 1000)
+ax.set_xlabel('Time (ms)')
+ax.set_ylabel('$\\phi_o$ (µV)')
+ax.set_title(f'Extracellular Potential at Electrode (x={xp} cm, y={Ro} cm) vs Time')
+plt.tight_layout()
+plt.savefig('q1_extracellular_potential_vs_time.png', dpi=300, bbox_inches='tight')
+plt.close()
+
+# Vm vs position at t=15ms
+t_plot = 15 # ms
+x_AP_plot = v_c * t_plot
+Vm_plot = V_rest + V_AP * np.exp(-((xj - x_AP_plot)**2) / (2 * AP_sigma**2))
+fig, ax = plt.subplots()
+ax.plot(xj, Vm_plot)
+ax.axvline(x=x_AP_plot, color='r', linestyle='--', label=f'AP center (x={x_AP_plot:.1f} cm)', zorder=0)
+ax.legend()
+ax.set_xlabel('Position (cm)')
+ax.set_ylabel('$V_m$ (mV)')
+ax.set_title(f'Transmembrane Voltage vs Position at t={t_plot} ms')
+plt.tight_layout()
+plt.savefig('q1_Vm_vs_position_t15ms.png', dpi=300, bbox_inches='tight')
+plt.close()
+
+# g vs position at t=10ms
+t_plot_g = 10 # ms
+x_AP_plot_g = v_c * t_plot_g
+Vm_plot_g = V_rest + V_AP * np.exp(-((xj - x_AP_plot_g)**2) / (2 * AP_sigma**2))
+g_plot = B @ Vm_plot_g
+fig, ax = plt.subplots()
+ax.plot(xj, g_plot)
+ax.axvline(x=x_AP_plot_g, color='r', linestyle='--', label=f'AP center (x={x_AP_plot_g:.1f} cm)', zorder=0)
+ax.legend()
+ax.set_xlabel('Position (cm)')
+ax.set_ylabel('$g$ = $\\partial V_m / \\partial x$ (mV/cm)')
+ax.set_title(f'Spatial Derivative of $V_m$ vs Position at t={t_plot_g} ms')
+plt.tight_layout()
+plt.savefig('q1_g_vs_position_t10ms.png', dpi=300, bbox_inches='tight')
+plt.close()
+
+# Vm vs time at x=2cm
+x_obs = 2 # cm
+Vm_at_x = V_rest + V_AP * np.exp(-((x_obs - v_c * t)**2) / (2 * AP_sigma**2))
+fig, ax = plt.subplots()
+ax.plot(t, Vm_at_x)
+ax.set_xlabel('Time (ms)')
+ax.set_ylabel('$V_m$ (mV)')
+ax.set_title(f'Transmembrane Voltage vs Time at x={x_obs} cm')
+plt.tight_layout()
+plt.savefig('q1_Vm_vs_time_x2cm.png', dpi=300, bbox_inches='tight')
+plt.close()
