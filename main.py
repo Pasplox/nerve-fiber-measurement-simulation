@@ -75,4 +75,5 @@ phi_o = np.zeros(len(t)) # mV | extracellular potential at electrode over time
 
 ### time loop
 for i, ti in enumerate(t):
-    pass
+    # central position of the AP at current time ti
+    x_AP = v_c * ti
