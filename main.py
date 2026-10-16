@@ -90,10 +90,11 @@ for i, ti in enumerate(t):
 ### ---------------------------
 
 ### q1 plots
+# extracellular potential at electrode vs time
 fig, ax = plt.subplots()
-ax.plot(t, phi_o)
+ax.plot(t, phi_o * 1000)
 ax.set_xlabel('Time (ms)')
-ax.set_ylabel('$\\phi_o$ (mV)')
+ax.set_ylabel('$\\phi_o$ (µV)')
 ax.set_title(f'Extracellular Potential at Electrode (x={xp} cm, y={Ro} cm) vs Time')
 plt.tight_layout()
 plt.savefig('q1_extracellular_potential_vs_time.png', dpi=300, bbox_inches='tight')
