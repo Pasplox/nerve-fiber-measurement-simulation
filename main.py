@@ -181,5 +181,8 @@ def monopole(y, A):
 def dipole(y, B):
     return B / y**2
 
+# fit the models to the data
 popt_mono, pcov_mono = curve_fit(monopole, y_values, pp_amps)
 popt_dip, pcov_dip  = curve_fit(dipole, y_values, pp_amps)
+
+y_fit = np.linspace(y_values[0], y_values[-1], 500)
