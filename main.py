@@ -74,5 +74,5 @@ phi_o = np.zeros(len(t)) # mV | extracellular potential at electrode over time
 ### ---------------------------
 
 ### time loop
-for i in range(len(t)):
+for i, ti in enumerate(t):
     pass
