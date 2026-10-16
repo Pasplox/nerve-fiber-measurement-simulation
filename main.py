@@ -57,9 +57,6 @@ AP_sigma = AP_FWHM / 2.36 # cm   | gaussian spatial sigma
 
 ### calculated parameters
 coeff = -(a**2 * sigma_i) / (4 * sigma_o) # cm^2 | dipole coefficient (-a^2 * sigma_i / 4 * sigma_o)
-# note: we only have to calculate these once since the electrode position is constant
-rj = np.sqrt((xj - xp)**2 + Ro**2)        # cm   | distance from each node to electrode
-d = (xp - xj) / rj**3                     # cm^-2 | geometric distance term (N x 1)
 # to calculate B matrix, format matrix to calculate central difference derivative of V_m
 # first and last rows remain zero (boundary condition)
 B = np.zeros((N, N))
@@ -67,29 +64,33 @@ diag_idx = np.arange(1, N - 1)
 B[diag_idx, diag_idx - 1] = -1 / (2 * dx) # subdiagonal
 B[diag_idx, diag_idx + 1] =  1 / (2 * dx) # superdiagonal
 
-# output extracellular potential
-# note: phi_o only varies with time, since we're measuring the extracellular potential at a single electrode location
-phi_o = np.zeros(len(t)) # mV | extracellular potential at electrode over time
-
 ### ---------------------------
 
-### time loop
-for i, ti in enumerate(t):
-    # central position of the AP at current time ti
-    x_AP = v_c * ti
-    # gaussian AP model (Vm), calculated as a column vector with each entry corresponding to each node position xj
-    # recalculated at each time step (due to AP propagation)
-    Vm = V_rest + V_AP * np.exp(-((xj - x_AP)**2) / (2 * AP_sigma**2))
-    # calculate g, the spatial derivative of Vm using the central difference method (B matrix)
-    # @ = matrix multiplication operator
-    g = B @ Vm
-    # calculate phi_o at the current time step using the trapezoidal rule for numerical integration
-    # syntax is equivalent to manually calculating and summing the area of trapezoids between each pair of points in the array
-    phi_o[i] = coeff * np.trapz(d * g, dx=dx)
+def simulate(xp, Ro):
+    # note: we only have to calculate these once since the electrode position is constant
+    rj = np.sqrt((xj - xp)**2 + Ro**2)        # cm   | distance from each node to electrode
+    d = (xp - xj) / rj**3                     # cm^-2 | geometric distance term (N x 1)
+    # output extracellular potential
+    # note: phi_o only varies with time, since we're measuring the extracellular potential at a single electrode location
+    phi_o = np.zeros(len(t)) # mV | extracellular potential at electrode over time
+    for i, ti in enumerate(t):
+        # central position of the AP at current time ti
+        x_AP = v_c * ti
+        # gaussian AP model (Vm), calculated as a column vector with each entry corresponding to each node position xj
+        # recalculated at each time step (due to AP propagation)
+        Vm = V_rest + V_AP * np.exp(-((xj - x_AP)**2) / (2 * AP_sigma**2))
+        # calculate g, the spatial derivative of Vm using the central difference method (B matrix)
+        # @ = matrix multiplication operator
+        g = B @ Vm
+        # calculate phi_o at the current time step using the trapezoidal rule for numerical integration
+        # syntax is equivalent to manually calculating and summing the area of trapezoids between each pair of points in the array
+        phi_o[i] = coeff * np.trapz(d * g, dx=dx)
+    return phi_o
 
 ### ---------------------------
 
 ### q1 plots
+phi_o = simulate(xp, Ro)
 # extracellular potential at electrode vs time
 fig, ax = plt.subplots()
 ax.plot(t, phi_o * 1000)
