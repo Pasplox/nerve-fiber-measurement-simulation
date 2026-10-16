@@ -99,3 +99,34 @@ ax.set_title(f'Extracellular Potential at Electrode (x={xp} cm, y={Ro} cm) vs Ti
 plt.tight_layout()
 plt.savefig('q1_extracellular_potential_vs_time.png', dpi=300, bbox_inches='tight')
 plt.close()
+
+# Vm vs position at t=15ms
+t_plot = 15 # ms
+x_AP_plot = v_c * t_plot
+Vm_plot = V_rest + V_AP * np.exp(-((xj - x_AP_plot)**2) / (2 * AP_sigma**2))
+fig, ax = plt.subplots()
+ax.plot(xj, Vm_plot)
+ax.axvline(x=x_AP_plot, color='r', linestyle='--', label=f'AP center (x={x_AP_plot:.1f} cm)', zorder=0)
+ax.legend()
+ax.set_xlabel('Position (cm)')
+ax.set_ylabel('$V_m$ (mV)')
+ax.set_title(f'Transmembrane Voltage vs Position at t={t_plot} ms')
+plt.tight_layout()
+plt.savefig('q1_Vm_vs_position_t15ms.png', dpi=300, bbox_inches='tight')
+plt.close()
+
+# g vs position at t=10ms
+t_plot_g = 10 # ms
+x_AP_plot_g = v_c * t_plot_g
+Vm_plot_g = V_rest + V_AP * np.exp(-((xj - x_AP_plot_g)**2) / (2 * AP_sigma**2))
+g_plot = B @ Vm_plot_g
+fig, ax = plt.subplots()
+ax.plot(xj, g_plot)
+ax.axvline(x=x_AP_plot_g, color='r', linestyle='--', label=f'AP center (x={x_AP_plot_g:.1f} cm)', zorder=0)
+ax.legend()
+ax.set_xlabel('Position (cm)')
+ax.set_ylabel('$g$ = $\\partial V_m / \\partial x$ (mV/cm)')
+ax.set_title(f'Spatial Derivative of $V_m$ vs Position at t={t_plot_g} ms')
+plt.tight_layout()
+plt.savefig('q1_g_vs_position_t10ms.png', dpi=300, bbox_inches='tight')
+plt.close()
