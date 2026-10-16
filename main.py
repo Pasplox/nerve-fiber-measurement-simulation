@@ -162,3 +162,5 @@ plt.close()
 
 ### q3 plots
 y_values = np.arange(0.1, 5.1, 0.5)
+for Ro in y_values:
+    pass
