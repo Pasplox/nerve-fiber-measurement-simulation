@@ -7,6 +7,9 @@ Zach Gor
 ### import libraries
 import numpy as np
 import matplotlib.pyplot as plt
+from scipy.optimize import curve_fit
+from scipy.stats import t as t_dist
+from sklearn.metrics import r2_score
 
 ### ---------------------------
 
@@ -157,3 +160,58 @@ ax.set_title(f'Extracellular Potential at Electrode (x={xp} cm, y={Ro} cm) vs Ti
 plt.tight_layout()
 plt.savefig('q2_extracellular_potential_vs_time.png', dpi=300, bbox_inches='tight')
 plt.close()
+
+### ---------------------------
+
+### q3 plots
+# determine extracellular potential (pp) at varying electrode y positions
+y_values = np.arange(0.1, 5.1, 0.5)
+pp_amps = np.zeros(len(y_values))  # µV
+for i, Ro in enumerate(y_values):
+    phi_o = simulate(50, Ro)
+    pp_amps[i] = (np.max(phi_o) - np.min(phi_o)) * 1000  # µV | peak-to-peak amplitude
+
+# save data to CSV
+np.savetxt('q3_pp_amp_vs_y.csv', np.column_stack([y_values, np.round(pp_amps, 4)]),
+           delimiter=',', header='y (cm),Peak-to-Peak (µV)', comments='', fmt='%.4f')
+
+# curve fit models
+# using proportionality constants A and B for monopole and dipole models, respectively
+def monopole(y, A):
+    return A / y
+
+def dipole(y, B):
+    return B / y**2
+
+# fit the models to the data
+popt_mono, pcov_mono = curve_fit(monopole, y_values, pp_amps)
+popt_dip, pcov_dip  = curve_fit(dipole, y_values, pp_amps)
+
+y_fit = np.linspace(y_values[0], y_values[-1], 500)
+
+# plot peak-to-peak amplitude vs electrode-to-fiber distance with curve fits
+fig, ax = plt.subplots()
+ax.scatter(y_values, pp_amps, label='Data', zorder=3)
+ax.plot(y_fit, monopole(y_fit, *popt_mono), label=f'Monopole fit ($A/y$, A={popt_mono[0]:.2f})', color='orange')
+ax.plot(y_fit, dipole(y_fit,   *popt_dip),  label=f'Dipole fit ($B/y^2$, B={popt_dip[0]:.2f})', color='green')
+ax.set_xlabel('Electrode-to-Fiber Distance, $y$ (cm)')
+ax.set_ylabel('Peak-to-Peak Amplitude (µV)')
+ax.set_title('Peak-to-Peak $\\phi_o$ Amplitude vs Electrode-to-Fiber Distance')
+ax.legend()
+plt.tight_layout()
+plt.savefig('q3_pp_amp_vs_y_cf.png', dpi=300, bbox_inches='tight')
+plt.close()
+
+# calculate r^2 values for each model fit
+r2_mono = r2_score(pp_amps, monopole(y_values, *popt_mono))
+r2_dip  = r2_score(pp_amps, dipole(y_values,   *popt_dip))
+print(f'Monopole R²: {r2_mono:.4f}')
+print(f'Dipole   R²: {r2_dip:.4f}')
+
+# 95% confidence intervals for fit coefficients
+n = len(y_values)
+t_crit = t_dist.ppf(0.975, n - 1)  # n-1 dof for 1 parameter per model
+ci_mono = t_crit * np.sqrt(np.diag(pcov_mono))
+ci_dip  = t_crit * np.sqrt(np.diag(pcov_dip))
+print(f'Monopole: A = {popt_mono[0]:.4f} ± {ci_mono[0]:.4f} (95% CI: [{popt_mono[0]-ci_mono[0]:.4f}, {popt_mono[0]+ci_mono[0]:.4f}])')
+print(f'Dipole:   B = {popt_dip[0]:.4f} ± {ci_dip[0]:.4f} (95% CI: [{popt_dip[0]-ci_dip[0]:.4f}, {popt_dip[0]+ci_dip[0]:.4f}])')
