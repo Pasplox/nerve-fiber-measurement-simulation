@@ -85,7 +85,7 @@ def simulate(xp, Ro):
         g = B @ Vm
         # calculate phi_o at the current time step using the trapezoidal rule for numerical integration
         # syntax is equivalent to manually calculating and summing the area of trapezoids between each pair of points in the array
-        phi_o[i] = coeff * np.trapz(d * g, dx=dx)
+        phi_o[i] = coeff * np.trapezoid(d * g, dx=dx)
     return phi_o
 
 ### ---------------------------
@@ -186,3 +186,16 @@ popt_mono, pcov_mono = curve_fit(monopole, y_values, pp_amps)
 popt_dip, pcov_dip  = curve_fit(dipole, y_values, pp_amps)
 
 y_fit = np.linspace(y_values[0], y_values[-1], 500)
+
+# plot peak-to-peak amplitude vs electrode-to-fiber distance with curve fits
+fig, ax = plt.subplots()
+ax.scatter(y_values, pp_amps, label='Data', zorder=3)
+ax.plot(y_fit, monopole(y_fit, *popt_mono), label=f'Monopole fit ($A/y$, A={popt_mono[0]:.2f})', color='orange')
+ax.plot(y_fit, dipole(y_fit,   *popt_dip),  label=f'Dipole fit ($B/y^2$, B={popt_dip[0]:.2f})', color='green')
+ax.set_xlabel('Electrode-to-Fiber Distance, $y$ (cm)')
+ax.set_ylabel('Peak-to-Peak Amplitude (µV)')
+ax.set_title('Peak-to-Peak $\\phi_o$ Amplitude vs Electrode-to-Fiber Distance')
+ax.legend()
+plt.tight_layout()
+plt.savefig('q3_pp_amp_vs_y_cf.png', dpi=300, bbox_inches='tight')
+plt.close()
