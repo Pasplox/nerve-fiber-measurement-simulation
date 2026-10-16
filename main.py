@@ -86,7 +86,7 @@ def simulate(xp, Ro):
         g = B @ Vm
         # calculate phi_o at the current time step using the trapezoidal rule for numerical integration
         # syntax is equivalent to manually calculating and summing the area of trapezoids between each pair of points in the array
-        phi_o[i] = coeff * np.trapezoid(d * g, dx=dx)
+        phi_o[i] = coeff * np.trapz(d * g, dx=dx)
     return phi_o
 
 ### ---------------------------
@@ -200,3 +200,9 @@ ax.legend()
 plt.tight_layout()
 plt.savefig('q3_pp_amp_vs_y_cf.png', dpi=300, bbox_inches='tight')
 plt.close()
+
+# calculate r^2 values for each model fit
+r2_mono = r2_score(pp_amps, monopole(y_values, *popt_mono))
+r2_dip  = r2_score(pp_amps, dipole(y_values,   *popt_dip))
+print(f'Monopole R²: {r2_mono:.4f}')
+print(f'Dipole   R²: {r2_dip:.4f}')
