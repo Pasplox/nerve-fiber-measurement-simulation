@@ -157,3 +157,8 @@ ax.set_title(f'Extracellular Potential at Electrode (x={xp} cm, y={Ro} cm) vs Ti
 plt.tight_layout()
 plt.savefig('q2_extracellular_potential_vs_time.png', dpi=300, bbox_inches='tight')
 plt.close()
+
+### ---------------------------
+
+### q3 plots
+y_values = np.arange(0.1, 5.1, 0.5)
