@@ -31,7 +31,7 @@ Rm = 3000 # ohm-cm^2 | membrane resistance (from Cable Eqn Params)
 Cm = 1    # uF/cm^2 | membrane capacitance (from Cable Eqn Params)
 
 # fiber geometry
-L = 100                      # cm   | fiber length
+L = 1000                      # cm   | fiber length
 dx = 100 * (2 * a)           # cm   | node spacing = 100 * axonal diameter (approx from class)
 xj = np.arange(0, L, dx)     # cm   | node positions along fiber
 N = len(xj)                  # number of nodes
