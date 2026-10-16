@@ -8,6 +8,8 @@ Zach Gor
 import numpy as np
 import matplotlib.pyplot as plt
 
+### ---------------------------
+
 ### define parameters
 # electrode location
 xp = 50 # cm | electrode x position (from lab handout)
@@ -51,6 +53,8 @@ AP_duration = 1 # ms   | approximate AP duration at a point
 AP_FWHM = AP_duration * v_c # cm   | spatial FWHM (duration × conduction velocity)
 AP_sigma = AP_FWHM / 2.36 # cm   | gaussian spatial sigma
 
+### ---------------------------
+
 ### calculated parameters
 coeff = -(a**2 * sigma_i) / (4 * sigma_o) # cm^2 | dipole coefficient (-a^2 * sigma_i / 4 * sigma_o)
 # note: we only have to calculate these once since the electrode position is constant
@@ -62,3 +66,5 @@ B = np.zeros((N, N))
 diag_idx = np.arange(1, N - 1)
 B[diag_idx, diag_idx - 1] = -1 / (2 * dx) # subdiagonal
 B[diag_idx, diag_idx + 1] =  1 / (2 * dx) # superdiagonal
+
+### ---------------------------
