@@ -67,4 +67,8 @@ diag_idx = np.arange(1, N - 1)
 B[diag_idx, diag_idx - 1] = -1 / (2 * dx) # subdiagonal
 B[diag_idx, diag_idx + 1] =  1 / (2 * dx) # superdiagonal
 
+# output extracellular potential
+# note: phi_o only varies with time, since we're measuring the extracellular potential at a single electrode location
+phi_o = np.zeros(len(t)) # mV | extracellular potential at electrode over time
+
 ### ---------------------------
